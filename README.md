@@ -294,7 +294,7 @@ The packages are used as follows:
 4. Run:
 
 ```r
-source("Cd_SPEicpms_model_2.R")
+source("ark_clam_cd_fingerprint_model.R")
 ```
 
 Alternatively, open the R script in RStudio and run it from the repository root directory.
