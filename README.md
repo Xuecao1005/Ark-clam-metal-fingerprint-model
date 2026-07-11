@@ -23,7 +23,7 @@ The analysis integrates three types of data:
 The current model predicts total Cd concentrations in:
 
 - gill;
-- viscera; and
+- viscera;
 - muscle.
 
 The response variable is expressed on a wet-weight basis and is log10-transformed before model fitting.
@@ -149,7 +149,7 @@ Ark-clam-metal-fingerprint-model/
 
 ### File descriptions
 
-- **`Cd_SPEicpms_model_2.R`**  
+- **`ark_clam_cd_fingerprint_model.R`**  
   Main R script for data preprocessing, HPLC-UV feature engineering, SEC-ICP-MS-informed ROI definition, Elastic Net modelling, leave-one-species-out validation, and figure generation.
 
 - **`ark_clam_hplc_uv_profiles.xlsx`**  
