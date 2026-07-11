@@ -114,16 +114,39 @@ The measured `Cd113` SEC-ICP-MS signal is used for ROI definition and graphical 
 
 ## ✅ Model Validation
 
-Model transferability is evaluated using leave-one-species-out cross-validation.
+Model transferability is evaluated using leave-one-species-out cross-validation rather than a random train-test split.
 
-For each validation split:
+The two ark clam species are alternately used as the training and testing groups:
 
-1. one ark clam species is used for model training;
-2. the other species is held out for testing;
-3. SEC-ICP-MS-informed regions are derived from training samples only;
-4. Elastic Net mixing parameters are evaluated over an alpha grid;
-5. lambda is selected using internal cross-validation; and
-6. held-out predictions are evaluated using RMSE, MAE, and R².
+1. all samples of *Tegillarca granosa* are used to train the model, and the fitted model is used to predict total Cd concentrations in *Anadara kagoshimensis*;
+2. all samples of *Anadara kagoshimensis* are then used to train the model, and the fitted model is used to predict total Cd concentrations in *Tegillarca granosa*.
+
+For each validation split, the training data contain:
+
+- HPLC-UV protein fingerprints as predictors;
+- measured total Cd concentrations as the response; and
+- SEC-ICP-MS profiles used only to derive Cd-associated retention-time regions and penalty factors.
+
+For the held-out species, only the HPLC-UV fingerprints are supplied to the fitted model to generate predicted total Cd concentrations.
+
+The measured Cd concentrations of the held-out species are not used during model training. They are retained only for comparison with the predicted values and for calculating RMSE, MAE, and R².
+
+SEC-ICP-MS profiles from the held-out species are also excluded when defining Cd-associated retention-time regions. The ROI information is derived from the training species only, thereby preventing information leakage from the test set.
+
+The validation procedure can therefore be summarized as:
+
+```text
+Train on T. granosa
+    ↓
+Predict Cd concentrations in A. kagoshimensis
+    ↓
+Compare predictions with measured Cd concentrations
+
+Train on A. kagoshimensis
+    ↓
+Predict Cd concentrations in T. granosa
+    ↓
+Compare predictions with measured Cd concentrations
 
 The model response is:
 
@@ -141,7 +164,7 @@ Predictions are subsequently back-transformed to the original wet-weight concent
 Ark-clam-metal-fingerprint-model/
 ├── README.md
 ├── LICENSE
-├── Cd_SPEicpms_model_2.R
+├── ark_clam_cd_fingerprint_model.R
 ├── ark_clam_hplc_uv_profiles.xlsx
 ├── ark_clam_sec_icp_ms_profiles.xlsx
 └── ark_clam_subcellular_metal_concentrations.xlsx
